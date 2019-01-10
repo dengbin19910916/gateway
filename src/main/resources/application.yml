@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: @project.artifactId@
+  profiles:
+    active: dev
+  cloud:
+    gateway:
+      enabled: false
+      discovery:
+        locator:
+          enabled: true
+    config:
+      discovery:
+        enabled: true
+      label: master
+      profile: dev
+server:
+  port: 80
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+info:
+  service-name: 网关
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 60000
+---
+spring:
+  profiles: dev
+  boot:
+    admin:
+      client:
+        url: "http://localhost:8080"
+eureka:
+  instance:
+    hostname: 127.0.0.1
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
